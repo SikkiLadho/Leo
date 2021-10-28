@@ -1,0 +1,11 @@
+	hello world without eret concatenated with main kernel -bl31.bin inlcuded
+	hello world without bl31.bin(el2)
+	return exception custon kernel github alone.
+	.
+	.
+	.
+	.
+	.
+	.
+	.
+	.
