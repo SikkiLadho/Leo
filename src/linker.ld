@@ -1,5 +1,6 @@
 SECTIONS
 {
+	. = 0x7F78E;
 	.text.boot : { *(.text.boot) }
 	.text : { *(.text) }
 	.rodata : { *(.rodata) }
