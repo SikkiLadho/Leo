@@ -7,7 +7,7 @@ void kernel_main(void)
 
 	asm("movz x2, #0xF");
 	asm("msr spsr_el2, x2");	
-	int val = 0x80000;
+	int val = 0x80872;
 	asm ("mov X2, %0":"=r"(val));
 	asm("msr elr_el2, x2");
 	asm("eret");
