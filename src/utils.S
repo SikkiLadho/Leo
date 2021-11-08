@@ -14,6 +14,8 @@ delay:
 	bne delay
 	ret
 
+
+//jumps from any Exception Level to EL1
 .globl jump
 jump:
 	bl arm64_elX_to_el1
