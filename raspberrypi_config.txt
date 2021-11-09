@@ -9,7 +9,7 @@ arm_64bit=1
 enable_gic=1
 armstub=bl31.bin
 kernel=el2-kernel.img
-initramfs el1-kernel.img 0x200000
+initramfs el1-kernel.img 0x400000
 # uncomment this if your display has a black border of unused pixels visible
 # and your display can output without overscan
 #disable_overscan=1
