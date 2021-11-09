@@ -18,7 +18,6 @@ delay:
 //jumps from any Exception Level to EL1
 .globl jump
 jump:  
-    mov x5, x0
 	b arm64_elX_to_el1
 
 
@@ -58,22 +57,21 @@ arm64_elX_to_el1:
 
 .confEL1:
     /* disable EL2 coprocessor traps */
-    mov x0, #0x33ff
-    msr cptr_el2, x0
+    mov x5, #0x33ff
+    msr cptr_el2, x5
 
     /* set EL1 to 64bit */
-    mov x0, #(1<<31)
-    msr hcr_el2, x0
+    mov x5, #(1<<31)
+    msr hcr_el2, x5
 
     /* disable EL1 FPU traps */
-    mov x0, #(0b11<<20)
-    msr cpacr_el1, x0
+    mov x5, #(0b11<<20)
+    msr cpacr_el1, x5
 
     /* set up the EL1 bounce interrupt */
-    mov x0, sp
-    msr sp_el1, x0
+    mov x5, sp
+    msr sp_el1, x5
     
-    mov x0, x5  
     isb
     eret
 
