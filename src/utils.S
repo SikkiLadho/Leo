@@ -41,7 +41,7 @@ arm64_elX_to_el1:
     msr scr_el3, x4
 
 
-	mov x4, #0x200000
+	mov x4, #0x400000
     msr elr_el3, x4
 
     mov x4, #((0b1111 << 6) | (0b0101)) /* EL1h runlevel */
@@ -49,7 +49,7 @@ arm64_elX_to_el1:
     b   .confEL1
 
 .inEL2:
-    mov x4, #0x200000
+    mov x4, #0x400000
 	msr elr_el2, x4
     mov x4, #((0b1111 << 6) | (0b0101)) /* EL1h runlevel */
     msr spsr_el2, x4
