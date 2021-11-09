@@ -1,9 +1,23 @@
 #include "mm.h"
-
 .section ".text.boot"
 
 .globl _start
 _start:
+
+	bl actual_start
+	
+	.word   0
+	.quad   0                    /* Image load offset from start of RAM */
+	.quad   0         			 /* Effective size of kernel image, little-endian */
+    .quad   0			         /* Informative flags, little-endian */
+    .quad   0                    /* reserved */
+    .quad   0                    /* reserved */
+    .quad   0                    /* reserved */
+    .word   0x644d5241                 /* Magic number, "ARM\x64" */
+    .word   0	
+
+actual_start:
+
 	mrs	x0, mpidr_el1		
 	and	x0, x0,#0xFF		// Check processor id
 	cbz	x0, master		// Hang for all non-primary CPU
