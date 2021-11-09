@@ -4,7 +4,7 @@
 .globl _start
 _start:
 
-	bl actual_start
+	b actual_start
 	
 	.word   0
 	.quad   0                    /* Image load offset from start of RAM */

@@ -18,7 +18,7 @@ delay:
 //jumps from any Exception Level to EL1
 .globl jump
 jump:  
-	bl arm64_elX_to_el1
+	b arm64_elX_to_el1
 
 
 arm64_elX_to_el1:
