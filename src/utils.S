@@ -18,6 +18,7 @@ delay:
 //jumps from any Exception Level to EL1
 .globl jump
 jump:  
+    mov x5, x0
 	b arm64_elX_to_el1
 
 
@@ -72,7 +73,7 @@ arm64_elX_to_el1:
     mov x0, sp
     msr sp_el1, x0
     
-    mov x0, 0x90000  
+    mov x0, x5  
     isb
     eret
 
