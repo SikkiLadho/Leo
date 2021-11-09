@@ -17,7 +17,7 @@ delay:
 
 //jumps from any Exception Level to EL1
 .globl jump
-jump:
+jump:  
 	bl arm64_elX_to_el1
 
 
@@ -71,7 +71,8 @@ arm64_elX_to_el1:
     /* set up the EL1 bounce interrupt */
     mov x0, sp
     msr sp_el1, x0
-
+    
+    mov x0, 0x90000  
     isb
     eret
 
