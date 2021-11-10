@@ -40,6 +40,7 @@ arm64_elX_to_el1:
     msr scr_el3, x4
 
 
+
 	mov x4, #0x400000
     msr elr_el3, x4
 
@@ -56,23 +57,8 @@ arm64_elX_to_el1:
 
 
 .confEL1:
-    /* disable EL2 coprocessor traps */
-    mov x5, #0x33ff
-    msr cptr_el2, x5
+   
 
-    /* set EL1 to 64bit */
-    mov x5, #(1<<31)
-    msr hcr_el2, x5
-
-    /* disable EL1 FPU traps */
-    mov x5, #(0b11<<20)
-    msr cpacr_el1, x5
-
-    /* set up the EL1 bounce interrupt */
-    mov x5, sp
-    msr sp_el1, x5
-    
-    isb
     eret
 
 
