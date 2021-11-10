@@ -6,5 +6,5 @@ void kernel_main(unsigned long dt_address)
 	uart_send_string("Hello, world Hi!\r\n");
 
 
-	jump(dt_address);
+	arm64_elX_to_el1(dt_address);
 }
