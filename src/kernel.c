@@ -3,7 +3,7 @@
 void kernel_main(unsigned long dt_address)
 {
 	uart_init();
-	uart_send_string("World\r\n");
+	uart_send_string("Hello\r\n");
 
 
 	jump(dt_address);

@@ -5,7 +5,15 @@
 _start:
 
 	b actual_start
-	
+	/* using the linux kernel image header to 'sell' this hypervisor to botoloader as the Linux Kernel
+		so that bootloader "hopefully" setups everything as it would do for the linux kernel. 
+
+		Before jumping to kernel, there are few conditions which 
+		should be met(i.e setting x0, with the address for dtb): 
+		
+		explained in linux Documentation/arm64/booting.rst
+
+	 */
 	.word   0
 	.quad   0                    /* Image load offset from start of RAM */
 	.quad   64000         		 /* Effective size of kernel image, little-endian */
