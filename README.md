@@ -1,4 +1,4 @@
-# Leo
+# Leo Hypervisor
 Leo. Type 1 hypervisor on Raspberry Pi 4 machine.
 
 # Set Up 
