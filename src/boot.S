@@ -25,18 +25,18 @@ _start:
     .word   0	
 
 actual_start:
-	mrs	x4, mpidr_el1		
-	and	x4, x4,#0xFF		// Check processor id
-	cbz	x4, master		// Hang for all non-primary CPU
+	mrs	x26, mpidr_el1		
+	and	x26, x26,#0xFF		// Check processor id
+	cbz	x26, master		// Hang for all non-primary CPU
 	b	proc_hang
 
 proc_hang: 
 	b 	proc_hang
 
 master:
-	adr	x4, bss_begin
-	adr	x1, bss_end
-	sub	x1, x1, x4
+	adr	x26, bss_begin
+	adr	x25, bss_end
+	sub	x25, x25, x26
 	bl 	memzero //try to remove this function, might cause problem with x0
 
 	mov	sp, #LOW_MEMORY 

@@ -1,6 +1,6 @@
 .globl memzero
 memzero:
-	str xzr, [x4], #8
-	subs x1, x1, #8
+	str xzr, [x26], #8
+	subs x25, x25, #8
 	b.gt memzero
 	ret
