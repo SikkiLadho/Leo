@@ -1,3 +1,6 @@
+
+Notice: Hypervisor will only work with linux kernel compiler with official ARM-GNU toolchain Cortex-A Family . It can be downloaded here: https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads  
+
 # Leo Hypervisor
 Leo. Type 1 hypervisor on Raspberry Pi 4 machine.
 
