@@ -1,0 +1,2 @@
+console=serial0,115200 console=ttyS0 root=PARTUUID=9cb05522-02 rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait earlycon=uart8250,mmio32,0xfe215040 earlycon=pl011,mmio32,0xfe201000
+
