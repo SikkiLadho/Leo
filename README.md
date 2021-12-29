@@ -24,9 +24,9 @@ This setup was tested on Debian
 
 `CROSS_COMPILE=aarch64-linux-gnu- make PLAT=rpi4 DEBUG=1`
 
-copy tf-a binary 'bl31.bin' to Raspberry Pi 4B's sd card /boot/
+Copy [Trusted Firmware-A (TF-A)](https://trustedfirmware-a.readthedocs.io/en/latest/) binary 'bl31.bin' to Raspberry Pi 4B's sd card /boot/
 
-`cp cp build/rpi4/debug/bl31.bin /media/me/boot/`
+`cp build/rpi4/debug/bl31.bin /media/me/boot/`
 
 ### Add following to /boot/config.txt in Raspberry Pi Model 4B
 
