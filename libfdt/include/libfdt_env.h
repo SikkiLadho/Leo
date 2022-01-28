@@ -3,8 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <string.h>
-
+#include "glibc.h"
 #define EXTRACT_BYTE(n)	((unsigned long long)((uint8_t *)&x)[n])
 static inline uint16_t fdt16_to_cpu(uint16_t x)
 {

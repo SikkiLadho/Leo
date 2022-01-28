@@ -52,7 +52,6 @@
 
 #include <fdt.h>
 #include <libfdt.h>
-
 #include "libfdt_internal.h"
 
 static int _fdt_blocks_misordered(const void *fdt,
