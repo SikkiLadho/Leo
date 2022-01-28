@@ -1,15 +1,16 @@
 ARMGNU ?= aarch64-linux-gnu
 
-COPS = -Wall -nostdlib -nostartfiles -ffreestanding -Iinclude 
-ASMOPS = -Iinclude 
+COPS = -Wall -nostdlib -nostartfiles -ffreestanding -Iinclude
+ASMOPS = -Iinclude
 
 BUILD_DIR = build
 SRC_DIR = src
 
 all : kernel8.img
 
+
 clean :
-	rm -rf $(BUILD_DIR) *.img 
+	rm -rf $(BUILD_DIR) *.img
 
 $(BUILD_DIR)/%_c.o: $(SRC_DIR)/%.c
 	mkdir -p $(@D)
@@ -27,5 +28,8 @@ DEP_FILES = $(OBJ_FILES:%.o=%.d)
 -include $(DEP_FILES)
 
 kernel8.img: $(SRC_DIR)/linker.ld $(OBJ_FILES)
-	$(ARMGNU)-ld -T $(SRC_DIR)/linker.ld -o $(BUILD_DIR)/kernel8.elf  $(OBJ_FILES)
+	cd libfdt && $(MAKE)
+	$(ARMGNU)-ld -T $(SRC_DIR)/linker.ld -Llibfdt -o $(BUILD_DIR)/kernel8.elf  $(OBJ_FILES) -lfdt
 	$(ARMGNU)-objcopy $(BUILD_DIR)/kernel8.elf -O binary el2-kernel.img
+
+	

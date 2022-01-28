@@ -19,6 +19,7 @@
 
 void kernel_main(unsigned long dt_address)
 {
+	fdt_check_header(dt_address);
 	uart_init();
 	//uart_send_string("Hello\r\n");
 	int el = get_el();
