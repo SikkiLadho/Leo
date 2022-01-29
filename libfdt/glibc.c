@@ -63,27 +63,41 @@ void * memset(void *s, int c,  unsigned int len)
 }
 
 
-int memcmp(const void *s1, const void *s2, int len)
+int memcmp(const void* s1, const void* s2,size_t n)
 {
-    unsigned char *p = s1;
-    unsigned char *q = s2;
-    int charCompareStatus = 0;
-    //If both pointer pointing same memory block
-    if (s1 == s2)
+    const unsigned char *p1 = s1, *p2 = s2;
+    while(n--)
+        if( *p1 != *p2 )
+            return *p1 - *p2;
+        else
+            p1++,p2++;
+    return 0;
+}
+
+void * memchr(const void *s, int c, unsigned n)
+{
+    unsigned char *p = (unsigned char*)s;
+    unsigned char *isCharFind = NULL;
+    while((s!= NULL) && (n--))
     {
-        return charCompareStatus;
-    }
-    while (len > 0)
-    {
-        if (*p != *q)
+        if( *p != (unsigned char)c )
         {
-            //compare the mismatching character
-            charCompareStatus = (*p >*q)?1:-1;
+            p++;
+        }
+        else
+        {
+            isCharFind = p;
             break;
         }
-        len--;
-        p++;
-        q++;
     }
-    return charCompareStatus;
+    return isCharFind;
+}
+
+
+char *strchr(const char *s, int c)
+{
+    while (*s != (char)c)
+        if (!*s++)
+            return 0;
+    return (char *)s;
 }

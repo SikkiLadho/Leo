@@ -1,7 +1,6 @@
 #include "printf.h"
  #include "mini_uart.h"
  #include "utils.h"
-
 // register int _X0 __asm("x0");
 // register int _X1 __asm("x1");
 // register int _X2 __asm("x2");
@@ -16,6 +15,7 @@
 // register int _X11 __asm("x11");
 // register int _X12 __asm("x12");
 
+int fdt_check_header(const void *fdt);
 
 void kernel_main(const void * dt_address)
 {
