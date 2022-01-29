@@ -4,7 +4,10 @@
 
 
 int fdt_check_header(const void *fdt);
-
+int fdt_delprop(void *fdt, int nodeoffset, const char *name);
+int fdt_subnode_offset(const void *fdt, int parentoffset, const char *name);
+int fdt_first_property_offset(const void *fdt, int nodeoffset);
+const void *fdt_getprop_by_offset(const void *fdt, int offset,const char **namep, int *lenp);
 // register int _X0 __asm("x0");
 // register int _X1 __asm("x1");
 // register int _X2 __asm("x2");
@@ -22,9 +25,18 @@ int fdt_check_header(const void *fdt);
 
 void kernel_main(const void * dt_address)
 {
+	int chosen_node_offset,current_prop_offset;	
+	const void *current_prop_struct;
+	int *lenp=0;
+	const char **namep=0; 
 	if(fdt_check_header(dt_address) == 0)
 	{
+
 		printf("DTB is a valid DTB. \n");
+		chosen_node_offset= fdt_subnode_offset(dt_address, 0, "chosen");
+		current_prop_offset = fdt_first_property_offset(dt_address, chosen_node_offset);
+		current_prop_struct = fdt_getprop_by_offset(dt_address, current_prop_offset, namep, lenp);
+		printf("Properties name ----->  %s ",*namep);
 	}
 	else
 	{
