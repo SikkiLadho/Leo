@@ -30,6 +30,6 @@ DEP_FILES = $(OBJ_FILES:%.o=%.d)
 kernel8.img: $(SRC_DIR)/linker.ld $(OBJ_FILES)
 	cd libfdt && $(MAKE)
 	$(ARMGNU)-ld -T $(SRC_DIR)/linker.ld -Llibfdt -o $(BUILD_DIR)/kernel8.elf  $(OBJ_FILES) -lfdt
-	$(ARMGNU)-objcopy $(BUILD_DIR)/kernel8.elf -O binary el2-kernel.img
+	$(ARMGNU)-objcopy $(BUILD_DIR)/kernel8.elf -O binary kernel8.img
 
 	

@@ -2,6 +2,9 @@
  #include "mini_uart.h"
  #include "utils.h"
 
+
+int fdt_check_header(const void *fdt);
+
 // register int _X0 __asm("x0");
 // register int _X1 __asm("x1");
 // register int _X2 __asm("x2");
