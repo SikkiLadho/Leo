@@ -1,64 +1,42 @@
 #include "glibc.h"
 
-size_t strlen(const char *str)
-{
-        const char *s;
-        for (s = str; *s; ++s);
-        return (s - str);
+size_t strlen(const char *s) {
+    size_t i;
+    for (i = 0; s[i] != '\0'; i++) ;
+    return i;
 }
 
-void *memmove(void *dest, const void *src, unsigned int n)
+void *memmove (void *dest, const void *src, size_t len)
 {
-   // unsigned char isCopyRequire = 0;  //flag bit
-    char *pcSource =(char *)src;
-    char *pcDstn =(char *)dest;
-    // return if pcDstn and pcSource is NULL
-    if ((pcSource == NULL) &&(pcDstn == NULL))
+  char *d = dest;
+  const char *s = src;
+  if (d < s)
+    while (len--)
+      *d++ = *s++;
+  else
     {
-        return NULL;
+      char *lasts = s + (len-1);
+      char *lastd = d + (len-1);
+      while (len--)
+        *lastd-- = *lasts--;
     }
-    // overlap buffer
-    if((pcSource < pcDstn) && (pcDstn < pcSource + n))
-    {
-        for (pcDstn += n, pcSource += n; n--;)
-        {
-            *--pcDstn = *--pcSource;
-        }
-    }
-    else
-    {
-        while(n--)
-        {
-            *pcDstn++ = *pcSource++;
-        }
-    }
+  return dest;
+}
+
+void *memcpy(void *dest, const void *src, size_t n)
+{
+    char *dp = dest;
+    const char *sp = src;
+    while (n--)
+        *dp++ = *sp++;
     return dest;
 }
 
-void * memcpy(void* dst, const void* src, unsigned int cnt)
-{
-    char *pszDest = (char *)dst;
-    const char *pszSource =( const char*)src;
-    if((pszDest!= NULL) && (pszSource!= NULL))
-    {
-        while(cnt) //till cnt
-        {
-            //Copy byte by byte
-            *(pszDest++)= *(pszSource++);
-            --cnt;
-        }
-    }
-    return dst;
-}
-
-
-void * memset(void *s, int c,  unsigned int len)
+void *memset(void *s, int c, size_t n)
 {
     unsigned char* p=s;
-    while(len--)
-    {
+    while(n--)
         *p++ = (unsigned char)c;
-    }
     return s;
 }
 
@@ -74,23 +52,16 @@ int memcmp(const void* s1, const void* s2,size_t n)
     return 0;
 }
 
-void * memchr(const void *s, int c, unsigned n)
+
+void *memchr(const void *s, int c, size_t n)
 {
     unsigned char *p = (unsigned char*)s;
-    unsigned char *isCharFind = NULL;
-    while((s!= NULL) && (n--))
-    {
+    while( n-- )
         if( *p != (unsigned char)c )
-        {
             p++;
-        }
         else
-        {
-            isCharFind = p;
-            break;
-        }
-    }
-    return isCharFind;
+            return p;
+    return 0;
 }
 
 
