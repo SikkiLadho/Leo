@@ -17,9 +17,16 @@
 // register int _X12 __asm("x12");
 
 
-void kernel_main(unsigned long dt_address)
+void kernel_main(const void * dt_address)
 {
-	
+	if(fdt_check_header(dt_address) == 0)
+	{
+		printf("DTB is a valid DTB. \n");
+	}
+	else
+	{
+		printf("DTB is not a valid DTB. \n");
+	}
 	uart_init();
 	//uart_send_string("Hello\r\n");
 	int el = get_el();
