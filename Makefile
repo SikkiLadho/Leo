@@ -11,6 +11,10 @@ all : kernel8.img
 
 clean :
 	rm -rf $(BUILD_DIR) *.img
+	rm -rf libfdt/*.d
+	rm -rf libfdt/*.o
+	rm -rf libfdt/*.a
+	
 
 $(BUILD_DIR)/%_c.o: $(SRC_DIR)/%.c
 	mkdir -p $(@D)
