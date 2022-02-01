@@ -1,23 +1,14 @@
 #include "printf.h"
-<<<<<<< HEAD
-#include "mini_uart.h"
-#include "utils.h"
-=======
  #include "mini_uart.h"
  #include "utils.h"
 
 
 
->>>>>>> 44866fb86ddfd4d30093d7948ba0a1d804ea5946
 int fdt_check_header(const void *fdt);
 int fdt_delprop(void *fdt, int nodeoffset, const char *name);
 int fdt_subnode_offset(const void *fdt, int parentoffset, const char *name);
 int fdt_first_property_offset(const void *fdt, int nodeoffset);
 const void *fdt_getprop_by_offset(const void *fdt, int offset,const char **namep, int *lenp);
-<<<<<<< HEAD
-int fdt_next_property_offset(const void *fdt, int offset);
-=======
->>>>>>> 44866fb86ddfd4d30093d7948ba0a1d804ea5946
 
 // register int _X0 __asm("x0");
 // register int _X1 __asm("x1");
