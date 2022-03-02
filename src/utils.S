@@ -30,8 +30,7 @@ jump:
 
 
 arm64_elX_to_el1:
-  mrs x26, CurrentEL
-
+	mrs x26, CurrentEL
     cmp x26, #(0b01 << 2)
     bne .notEL1
     /* Already in EL1 */
@@ -50,40 +49,42 @@ arm64_elX_to_el1:
 
 
 	mov x26, #0x400000
-    msr elr_el3, x26
+	msr elr_el3, x26
 
-    mov x26, #((0b1111 << 6) | (0b0101)) /* EL1h runlevel */
-    msr spsr_el3, x26
-    b   .confEL1
+	mov x26, #((0b1111 << 6) | (0b0101)) /* EL1h runlevel */
+	msr spsr_el3, x26
+	b .confEL1
 
 .inEL2:
-    mov x26, #0x400000
+	mov x26, #0x400000
 	msr elr_el2, x26
-    mov x26, #((0b1111 << 6) | (0b0101)) /* EL1h runlevel */
-    msr spsr_el2, x26
-
-
+	mov x26, #((0b1111 << 6) | (0b0101)) /* EL1h runlevel */
+	msr spsr_el2, x26
 
 .confEL1:
-    /* disable EL2 coprocessor traps */
-    mov x27, #0x33ff
-    msr cptr_el2, x27
+	/* disable EL2 coprocessor traps */
+	mov x27, #0x33ff
+	msr cptr_el2, x27
 
-    /* set EL1 to 64bit */
-    mov x27, #(1<<31)
-    msr hcr_el2, x27
+	/* set EL1 to 64bit */
+	mov x27, #(1<<31)
+	msr hcr_el2, x27
 
-    /* disable EL1 FPU traps */
-    mov x27, #(0b11<<20)
-    msr cpacr_el1, x27
+	/* disable EL1 FPU traps */
+	mov x27, #(0b11<<20)
+	msr cpacr_el1, x27
 
-    /* set up the EL1 bounce interrupt */
-    mov x27, sp
-    msr sp_el1, x27
+	/* set up the EL1 bounce interrupt */
+	mov x27, sp
+	msr sp_el1, x27
+ 
+	mov x1, xzr
+	mov x2, xzr
+	mov x3,xzr
     
-    isb
-    eret
+	isb
+	eret
 
 
 .Ltarget:
-    ret
+	ret
