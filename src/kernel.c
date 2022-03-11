@@ -1,19 +1,10 @@
 #include "printf.h"
 #include "mini_uart.h"
 #include "utils.h"
-<<<<<<< HEAD
-int fdt_check_header(const void *fdt);
-int fdt_delprop(void *fdt, int nodeoffset, const char *name);
-int fdt_subnode_offset(const void *fdt, int parentoffset, const char *name);
-int fdt_first_property_offset(const void *fdt, int nodeoffset);
-const void *fdt_getprop_by_offset(const void *fdt, int offset,const char **namep, int *lenp);
-int fdt_next_property_offset(const void *fdt, int offset);
-=======
 
 int fdt_check_header(const void *fdt);
 int fdt_delprop(void *fdt, int nodeoffset, const char *name);
 int fdt_subnode_offset(const void *fdt, int parentoffset, const char *name);
->>>>>>> 701aa7d0566bfc657d9967f66ea66325ddcd8022
 
 void kernel_main( void * dtb_addr)
 {

@@ -1,3 +1,77 @@
+.macro lower_sync_exception
+    
+.endm
+
+
+
+.globl vector_table_el2
+.balign 0x800
+vector_table_el2:
+sync_cur_sp0:
+	b .
+
+.balign 0x80
+irq_cur_sp0:
+	b .
+
+.balign 0x80
+fiq_cur_sp0:
+	b .
+
+.balign 0x80
+serr_cur_sp0:
+	b .
+
+.balign 0x80
+sync_cur_spx:
+	b .
+
+.balign 0x80
+irq_cur_spx:
+	b .
+
+.balign 0x80
+fiq_cur_spx:
+	b .
+
+.balign 0x80
+serr_cur_spx:
+	b . 
+
+.balign 0x80
+sync_lower_64:
+	lower_sync_exception
+
+.balign 0x80
+irq_lower_64:
+	b .
+
+.balign 0x80
+fiq_lower_64:
+	b .
+
+.balign 0x80
+serr_lower_64:
+	b .
+
+.balign 0x80
+sync_lower_32:
+	b .
+
+.balign 0x80
+irq_lower_32:
+	b .
+
+.balign 0x80
+fiq_lower_32:
+	b .
+
+.balign 0x80
+serr_lower_32:
+	b .
+
+
+
 .globl get_el
 get_el:
 	mrs x0, CurrentEL
@@ -77,14 +151,26 @@ arm64_elX_to_el1:
 	/* set up the EL1 bounce interrupt */
 	mov x27, sp
 	msr sp_el1, x27
+
+
+
+	/* Configure exception handlers. */
+	adr x2, vector_table_el2
+	msr vbar_el2, x2
  
 	mov x1, xzr
 	mov x2, xzr
 	mov x3,xzr
     
+    
+
+
 	isb
 	eret
 
 
 .Ltarget:
 	ret
+
+
+
