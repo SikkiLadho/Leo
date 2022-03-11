@@ -1,5 +1,6 @@
+
 .macro lower_sync_exception
-    
+	bl sync_output
 .endm
 
 
@@ -157,7 +158,11 @@ arm64_elX_to_el1:
 	/* Configure exception handlers. */
 	adr x2, vector_table_el2
 	msr vbar_el2, x2
- 
+	
+	mrs x1, hcr_el2
+	orr x1, x1, #(0x1 << 19)	
+	msr hcr_el2, x1
+
 	mov x1, xzr
 	mov x2, xzr
 	mov x3,xzr
