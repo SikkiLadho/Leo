@@ -5,7 +5,10 @@
 int fdt_check_header(const void *fdt);
 int fdt_delprop(void *fdt, int nodeoffset, const char *name);
 int fdt_subnode_offset(const void *fdt, int parentoffset, const char *name);
+int fdt_setprop(void *fdt, int nodeoffset, const char *name, const void *val, int len);
 
+//change enable-method for given cpu node from spin-table to psci
+void spin_tbl_to_psci(void * dtb_addr, int cpu);
 void kernel_main( void * dtb_addr)
 {
 	
@@ -45,7 +48,30 @@ void kernel_main( void * dtb_addr)
 		//deleting the "linux,initrd-end" and  "linux,initrd-start"
 		if (fdt_delprop(dtb_addr, chosen, "linux,initrd-end") == 0 && fdt_delprop(dtb_addr, chosen, "linux,initrd-start") == 0) {
 			printf("Deleted \"linux,initrd-end\" and  \"linux,initrd-start\" from DTB.\n");
+			int cpus_node;
+			cpus_node = fdt_subnode_offset((const void*)dtb_addr, 0, "cpus");
+			if(cpus_node >= 0)
+			{
+				int cpu;
+				
+				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@0");
+				spin_tbl_to_psci(dtb_addr,cpu);
+
+				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@1");
+				spin_tbl_to_psci(dtb_addr,cpu);
+
+				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@2");
+				spin_tbl_to_psci(dtb_addr,cpu);
+				
+				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@3");
+				spin_tbl_to_psci(dtb_addr,cpu);	
+			}
+			else
+			{
+				printf("OOPS. Not Found.\n");
+			}
 			printf("Jumping into Linux kernel...\n");
+
 		}
 		else {
 			printf("Could not delete delete \"linux,initrd-end\" and \"linux,initrd-start\" from DTB.\n");
@@ -61,3 +87,24 @@ void kernel_main( void * dtb_addr)
 }
 
 
+void spin_tbl_to_psci(void * dtb_addr, int cpu)
+{
+		if(cpu>=0)
+				{
+					int changed  = fdt_setprop(dtb_addr, cpu,"enable-method",
+		"psci", 5);		
+					int deleted = fdt_delprop(dtb_addr, cpu, "cpu-release-addr");
+
+					if(changed==0 && deleted == 0)
+					{
+						printf("CHANGED THE ENABLE METHOD TO PSCI.\n");
+					}
+					else
+					{
+						printf("Could not change enable method from to psci.\n");
+					}
+
+				}
+				else
+				printf("oops, not found.\n");
+}

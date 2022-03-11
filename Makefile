@@ -5,8 +5,15 @@ ASMOPS = -Iinclude
 
 BUILD_DIR = build
 SRC_DIR = src
+FAT_DIR?=sdc1
 
 all : kernel8.img
+
+install : clean kernel8.img
+	sudo mount /dev/$(FAT_DIR) /mnt/fat32
+	sudo rm /mnt/fat32/kernel8.img 
+	sudo cp kernel8.img /mnt/fat32/
+	sudo umount /dev/$(FAT_DIR)
 
 
 clean :
