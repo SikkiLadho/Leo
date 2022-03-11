@@ -38,3 +38,4 @@ master:
 	bl kernel_main
 	// should never come here
 	b proc_hang
+
