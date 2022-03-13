@@ -1,6 +1,13 @@
 
 .macro lower_sync_exception
-	bl sync_output
+	mrs x25, elr_el2
+	mrs x26, spsr_el2
+	stp x25, x26,[sp, #-16]!
+	smc 0
+	ldp x25,x26, [sp], #16
+	msr elr_el2, x25
+	msr spsr_el2, x26
+	eret 
 .endm
 
 

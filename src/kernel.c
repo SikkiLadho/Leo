@@ -2,9 +2,9 @@
 #include "mini_uart.h"
 #include "utils.h"
 
-extern void sync_output(int esr)
+extern void sync_output(void)
 {
-    printf("EXCEPTIONS CALLED SIKKI LADHO %d\n", esr);
+    printf("EXCEPTIONS CALLED SIKKI LADHO\n");
 }
 int fdt_check_header(const void *fdt);
 int fdt_subnode_offset(const void *fdt, int parentoffset, const char *name);
@@ -57,8 +57,8 @@ void kernel_main( void * dtb_addr)
 			{
 				int cpu;
 				
-				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@0");
-				spin_tbl_to_psci(dtb_addr,cpu);
+				//cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@0");
+				//spin_tbl_to_psci(dtb_addr,cpu);
 
 				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@1");
 				spin_tbl_to_psci(dtb_addr,cpu);
@@ -109,5 +109,5 @@ void spin_tbl_to_psci(void * dtb_addr, int cpu)
 
 				}
 				else
-				printf("oops, not found.\n");
+				printf("oops, cpus node not found.\n");
 }
