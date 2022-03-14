@@ -1,6 +1,3 @@
-
-
-#include "mini_uart.h"
 .macro save_registers
 	/* Reserve stack space and save registers x0-x18, x29 & x30. */
 	stp x0, x1, [sp, #-(8 * 24)]!
