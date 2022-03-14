@@ -61,3 +61,4 @@ void _putchar(char character)
 
 	uart_send(character);
 }
+

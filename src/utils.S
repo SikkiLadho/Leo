@@ -1,13 +1,44 @@
 
+
+#include "mini_uart.h"
+.macro save_volatile_to_vcpu
+	/*
+	 * Save x18 since we're about to clobber it. We subtract 16 instead of
+	 * 8 from the stack pointer to keep it 16-byte aligned.
+	 */
+	str x18, [sp, #-16]!
+
+	/* Get the current vCPU. */
+	mrs x18, tpidr_el2
+	stp x0, x1, [x18,  8 * 0]
+	stp x2, x3, [x18,  8 * 2]
+	stp x4, x5, [x18,  8 * 4]
+	stp x6, x7, [x18,  8 * 6]
+	stp x8, x9, [x18,  8 * 8]
+	stp x10, x11, [x18, 8 * 10]
+	stp x12, x13, [x18,  8 * 12]
+	stp x14, x15, [x18,  8 * 14]
+	stp x16, x17, [x18,  8 * 16]
+	stp x29, x30, [x18,  8 * 29]
+
+	/* x18 was saved on the stack, so we move it to vCPU regs buffer. */
+	ldr x0, [sp], #16
+	str x0, [x18,  8 * 18]
+
+	/* Save return address & mode. */
+	mrs x1, elr_el2
+	mrs x2, spsr_el2
+	stp x1, x2, [x18,  8 * 31]
+	mrs x1, hcr_el2
+	str x1, [x18,  8 * 33]
+
+
+.endm
+
+
 .macro lower_sync_exception
-	mrs x25, elr_el2
-	mrs x26, spsr_el2
-	stp x25, x26,[sp, #-16]!
-	smc 0
-	ldp x25,x26, [sp], #16
-	msr elr_el2, x25
-	msr spsr_el2, x26
-	eret 
+	save_volatile_to_vcpu
+	
 .endm
 
 
