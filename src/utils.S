@@ -1,43 +1,58 @@
 
 
 #include "mini_uart.h"
-.macro save_volatile_to_vcpu
+.macro save_registers
+	/* Reserve stack space and save registers x0-x18, x29 & x30. */
+	stp x0, x1, [sp, #-(8 * 24)]!
+	stp x2, x3, [sp, #8 * 2]
+	stp x4, x5, [sp, #8 * 4]
+	stp x6, x7, [sp, #8 * 6]
+	stp x8, x9, [sp, #8 * 8]
+	stp x10, x11, [sp, #8 * 10]
+	stp x12, x13, [sp, #8 * 12]
+	stp x14, x15, [sp, #8 * 14]
+	stp x16, x17, [sp, #8 * 16]
+	str x18, [sp, #8 * 18]
+	stp x29, x30, [sp, #8 * 20]
+
 	/*
-	 * Save x18 since we're about to clobber it. We subtract 16 instead of
-	 * 8 from the stack pointer to keep it 16-byte aligned.
+	 * Save elr_elx & spsr_elx. This such that we can take nested exception
+	 * and still be able to unwind.
 	 */
-	str x18, [sp, #-16]!
-
-	/* Get the current vCPU. */
-	mrs x18, tpidr_el2
-	stp x0, x1, [x18,  8 * 0]
-	stp x2, x3, [x18,  8 * 2]
-	stp x4, x5, [x18,  8 * 4]
-	stp x6, x7, [x18,  8 * 6]
-	stp x8, x9, [x18,  8 * 8]
-	stp x10, x11, [x18, 8 * 10]
-	stp x12, x13, [x18,  8 * 12]
-	stp x14, x15, [x18,  8 * 14]
-	stp x16, x17, [x18,  8 * 16]
-	stp x29, x30, [x18,  8 * 29]
-
-	/* x18 was saved on the stack, so we move it to vCPU regs buffer. */
-	ldr x0, [sp], #16
-	str x0, [x18,  8 * 18]
-
-	/* Save return address & mode. */
-	mrs x1, elr_el2
-	mrs x2, spsr_el2
-	stp x1, x2, [x18,  8 * 31]
-	mrs x1, hcr_el2
-	str x1, [x18,  8 * 33]
+	mrs x0, elr_el2
+	mrs x1, spsr_el2
+	stp x0, x1, [sp, #8 * 22]
 
 
 .endm
 
 
+.macro restore_registers
+	/* Restore registers x2-x18, x29 & x30. */
+	ldp x2, x3, [sp, #8 * 2]
+	ldp x4, x5, [sp, #8 * 4]
+	ldp x6, x7, [sp, #8 * 6]
+	ldp x8, x9, [sp, #8 * 8]
+	ldp x10, x11, [sp, #8 * 10]
+	ldp x12, x13, [sp, #8 * 12]
+	ldp x14, x15, [sp, #8 * 14]
+	ldp x16, x17, [sp, #8 * 16]
+	ldr x18, [sp, #8 * 18]
+	ldp x29, x30, [sp, #8 * 20]
+
+	/* Restore registers elr_elx & spsr_elx, using x0 & x1 as scratch. */
+	ldp x0, x1, [sp, #8 * 22]
+	msr elr_el2, x0
+	msr spsr_el2, x1
+
+	/* Restore x0 & x1, and release stack space. */
+	ldp x0, x1, [sp], #8 * 24
+.endm
+
+
+
 .macro lower_sync_exception
-	save_volatile_to_vcpu
+	save_registers
 	
 .endm
 
