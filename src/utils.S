@@ -1,3 +1,4 @@
+
 .macro save_registers
 	/* Reserve stack space and save registers x0-x18, x29 & x30. */
 	stp x0, x1, [sp, #-(8 * 24)]!
@@ -49,8 +50,13 @@
 
 
 .macro lower_sync_exception
+	bl print_registers
 	save_registers
+	bl print_registers
 	
+	restore_registers
+	bl print_registers
+
 .endm
 
 

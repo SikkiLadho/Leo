@@ -2,14 +2,11 @@
 #include "mini_uart.h"
 #include "utils.h"
 
-extern void sync_output(void)
-{
-    printf("EXCEPTIONS CALLED SIKKI LADHO\n");
-}
 int fdt_check_header(const void *fdt);
+int fdt_delprop(void *fdt, int nodeoffset, const char *name);
 int fdt_subnode_offset(const void *fdt, int parentoffset, const char *name);
 int fdt_setprop(void *fdt, int nodeoffset, const char *name, const void *val, int len);
-int fdt_delprop(void *fdt, int nodeoffset, const char *name);
+
 //change enable-method for given cpu node from spin-table to psci
 void spin_tbl_to_psci(void * dtb_addr, int cpu);
 void kernel_main( void * dtb_addr)
@@ -57,8 +54,8 @@ void kernel_main( void * dtb_addr)
 			{
 				int cpu;
 				
-				//cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@0");
-				//spin_tbl_to_psci(dtb_addr,cpu);
+				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@0");
+				spin_tbl_to_psci(dtb_addr,cpu);
 
 				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@1");
 				spin_tbl_to_psci(dtb_addr,cpu);
@@ -109,5 +106,5 @@ void spin_tbl_to_psci(void * dtb_addr, int cpu)
 
 				}
 				else
-				printf("oops, cpus node not found.\n");
+				printf("oops, not found.\n");
 }
