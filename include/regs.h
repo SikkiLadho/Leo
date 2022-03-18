@@ -1,5 +1,7 @@
 #ifndef _LEO_REGS_H
 #define _LEO_REGS_H
+#define GET_NEXT_PC_INC(esr) (GET_ESR_IL(esr) ? 4 : 2)
+#define GET_ESR_IL(esr) ((esr) & (1 << 25))
 
 #include <stddef.h>
 typedef unsigned long int __uint64_t;
@@ -43,6 +45,16 @@ typedef uint64_t uintreg_t;
 				 : "rZ"((uintreg_t)(value))); \
 	})
 
+
+extern void get_next_pc(){
+    long int esr = read_msr(esr_el2);
+    
+    uint64_t next_pc = 2 + read_msr(elr_el2);
+
+    write_msr(elr_el2,next_pc);
+
+    return ;
+}
 
 
 

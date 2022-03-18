@@ -17,6 +17,10 @@
 	 * Save elr_elx & spsr_elx. This such that we can take nested exception
 	 * and still be able to unwind.
 	 */
+
+	bl get_next_pc
+
+
 	mrs x0, elr_el2
 	mrs x1, spsr_el2
 	stp x0, x1, [sp, #8 * 22]
@@ -38,6 +42,7 @@
 	ldr x18, [sp, #8 * 18]
 	ldp x29, x30, [sp, #8 * 20]
 
+
 	/* Restore registers elr_elx & spsr_elx, using x0 & x1 as scratch. */
 	ldp x0, x1, [sp, #8 * 22]
 	msr elr_el2, x0
@@ -50,12 +55,10 @@
 
 
 .macro lower_sync_exception
-	bl print_registers
+
 	save_registers
-	bl print_registers
-	
-	restore_registers
-	bl print_registers
+	smc 0
+	eret
 
 .endm
 
