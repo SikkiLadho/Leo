@@ -15,11 +15,6 @@ void kernel_main( void * dtb_addr)
 	uart_init();
 
 	printf("Leo Hypervisor Running...\r\n");
-	uart_send_string("Osama\r\n");
-	uart_send_string("Osama\r\n");
-	uart_send_string("Osama\r\n");
-	uart_send_string("Osama\r\n");
-	uart_send_string("Osama\r\n");
 	int el = get_el();
 	printf("Exception level: %d \r\n", el);
 	printf("DTB Address: %x \r\n", dtb_addr);
