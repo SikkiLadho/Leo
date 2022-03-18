@@ -18,9 +18,6 @@
 	 * and still be able to unwind.
 	 */
 
-	bl get_next_pc
-
-
 	mrs x0, elr_el2
 	mrs x1, spsr_el2
 	stp x0, x1, [sp, #8 * 22]
@@ -55,9 +52,12 @@
 
 
 .macro lower_sync_exception
-
-	save_registers
+	mrs x25, elr_el2
+	str x25, [sp, #-16]
 	smc 0
+	ldr x25, [sp], #16
+	msr elr_el2, x25
+	bl get_next_pc
 	eret
 
 .endm
