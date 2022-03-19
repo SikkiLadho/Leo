@@ -58,6 +58,7 @@
 	save_registers
 	bl print_registers
 	restore_registers
+	mov w7, wzr
 	smc 0
 	save_registers
 	bl print_registers
