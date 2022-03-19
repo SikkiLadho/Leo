@@ -87,13 +87,17 @@
 	bl print_registers
 	restore_registers
 	mov w7, wzr
-	smc 0
+	smc 1
 	save_registers
 	bl print_registers
 	restore_registers
 	save_gp_registers
 	bl get_next_pc
+<<<<<<< HEAD
 	restore_gp_registers
+=======
+	bl print_registers
+>>>>>>> 9caf401135ce7af9d5096193b886b088a8503018
 	eret
 
 .endm
