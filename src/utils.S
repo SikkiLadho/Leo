@@ -21,7 +21,8 @@
 	mrs x0, elr_el2
 	mrs x1, spsr_el2
 	stp x0, x1, [sp, #8 * 22]
-
+	mrs x3, esr_el2
+	str x3, [sp,#8 * 24]
 
 .endm
 
@@ -44,19 +45,23 @@
 	ldp x0, x1, [sp, #8 * 22]
 	msr elr_el2, x0
 	msr spsr_el2, x1
-
+	ldr x3,[sp,#8 * 24]
+	msr esr_el2,x3
 	/* Restore x0 & x1, and release stack space. */
-	ldp x0, x1, [sp], #8 * 24
+	ldp x0, x1, [sp], #8 * 26
 .endm
 
 
 
 .macro lower_sync_exception
-	mrs x25, elr_el2
-	str x25, [sp, #-16]
+	
+	save_registers
+	bl print_registers
+	restore_registers
 	smc 0
-	ldr x25, [sp], #16
-	msr elr_el2, x25
+	save_registers
+	bl print_registers
+	restore_registers
 	bl get_next_pc
 	eret
 
