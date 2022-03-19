@@ -49,7 +49,7 @@ typedef uint64_t uintreg_t;
 extern void get_next_pc(){
     long int esr = read_msr(esr_el2);
     
-    uint64_t next_pc = 2 + read_msr(elr_el2);
+    uint64_t next_pc = GET_NEXT_PC_INC(esr) + read_msr(elr_el2);
 
     write_msr(elr_el2,next_pc);
 

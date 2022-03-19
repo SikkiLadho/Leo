@@ -59,11 +59,12 @@
 	bl print_registers
 	restore_registers
 	mov w7, wzr
-	smc 0
+	smc 1
 	save_registers
 	bl print_registers
 	restore_registers
 	bl get_next_pc
+	bl print_registers
 	eret
 
 .endm

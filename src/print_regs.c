@@ -2,6 +2,7 @@
 #include "regs.h"
 void print_registers(){
 
+    printf("x0 -> %d \r\n",read_reg(x0));
     printf("x1 -> %d \r\n",read_reg(x1));
     printf("x2 -> %d \r\n",read_reg(x2));
     printf("x3 -> %d \r\n",read_reg(x3));
