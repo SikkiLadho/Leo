@@ -90,7 +90,7 @@ void handle_lower_aarch64(uintreg_t x0)
     }
     else
     {
-        uintreg_t smc_pc = regs->pc;
+         uintreg_t smc_pc = regs->pc;
 		smc_handler(regs);
        
 		/* Skip the SMC instruction. */

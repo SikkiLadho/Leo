@@ -105,15 +105,7 @@
 	save_registers
 	bl handle_lower_aarch64
 	restore_registers
-	mov w7, wzr
-	smc 0
-	save_registers
-	bl print_registers
-	restore_registers
-	save_gp_registers
-	bl get_next_pc
-	restore_gp_registers
-	eret
+	eret_with_sb
 
 .endm
 
