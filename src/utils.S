@@ -70,36 +70,6 @@
 	
 .endm
 
-
-.macro save_gp_registers
-	/* Reserve stack space and save registers x0-x18, x29 & x30. */
-	stp x0, x1, [sp, #-(8 * 20)]!
-	stp x2, x3, [sp, #8 * 2]
-	stp x4, x5, [sp, #8 * 4]
-	stp x6, x7, [sp, #8 * 6]
-	stp x8, x9, [sp, #8 * 8]
-	stp x10, x11, [sp, #8 * 10]
-	stp x12, x13, [sp, #8 * 12]
-	stp x14, x15, [sp, #8 * 14]
-	stp x16, x17, [sp, #8 * 16]
-	str x18, [sp, #8 * 18]
-	stp x29, x30, [sp], #8 * 20
-.endm
-
-.macro restore_gp_registers
-	/* Restore registers x2-x18, x29 & x30. */
-	ldp x2, x3, [sp, #8 * 2]
-	ldp x4, x5, [sp, #8 * 4]
-	ldp x6, x7, [sp, #8 * 6]
-	ldp x8, x9, [sp, #8 * 8]
-	ldp x10, x11, [sp, #8 * 10]
-	ldp x12, x13, [sp, #8 * 12]
-	ldp x14, x15, [sp, #8 * 14]
-	ldp x16, x17, [sp, #8 * 16]
-	ldr x18, [sp, #8 * 18]
-	ldp x29, x30, [sp], #8 * 20
-.endm
-
 .macro lower_sync_exception
 	
 	save_registers
