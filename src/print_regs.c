@@ -1,5 +1,5 @@
 #include "printf.h"
-#include "regs.h"
+#include "reg_macros.h"
 void print_registers(){
 
     printf("x0 -> %d \r\n",read_reg(x0));

@@ -1,54 +1,73 @@
 
+.macro eret_with_sb
+	eret
+	dsb	nsh
+	isb
+.endm
+
 .macro save_registers
-	/* Reserve stack space and save registers x0-x18, x29 & x30. */
-	stp x0, x1, [sp, #-(8 * 24)]!
-	stp x2, x3, [sp, #8 * 2]
-	stp x4, x5, [sp, #8 * 4]
-	stp x6, x7, [sp, #8 * 6]
-	stp x8, x9, [sp, #8 * 8]
-	stp x10, x11, [sp, #8 * 10]
-	stp x12, x13, [sp, #8 * 12]
-	stp x14, x15, [sp, #8 * 14]
-	stp x16, x17, [sp, #8 * 16]
-	str x18, [sp, #8 * 18]
-	stp x29, x30, [sp, #8 * 20]
+	/* Reserve stack space and save registers x0-x30. */
+	str x18, [sp, #-16]!
+	mrs x18, tpidr_el2
+	stp x0, x1, [x18, #8 * 0]
+	stp x2, x3, [x18, #8 * 2]
+	stp x4, x5, [x18, #8 * 4]
+	stp x6, x7, [x18, #8 * 6]
+	stp x8, x9, [x18, #8 * 8]
+	stp x10, x11, [x18, #8 * 10]
+	stp x12, x13, [x18, #8 * 12]
+	stp x14, x15, [x18, #8 * 14]
+	stp x16, x17, [x18, #8 * 16]
+	stp x29, x30, [x18, #8 * 29]
+	
+	ldr x0, [sp], #16
+	str x0, [x18, #8 * 18]
 
 	/*
-	 * Save elr_elx & spsr_elx. This such that we can take nested exception
+	 * Save elr_elx, spsr_elx & spsr_el2. This such that we can take nested exception
 	 * and still be able to unwind.
 	 */
 
-	mrs x0, elr_el2
-	mrs x1, spsr_el2
-	stp x0, x1, [sp, #8 * 22]
-	mrs x3, esr_el2
-	str x3, [sp,#8 * 24]
+	/* Save return address & mode. */
+	mrs x1, elr_el2
+	mrs x2, spsr_el2
+	stp x1, x2, [x18, #8 * 31]
+	mrs x1, hcr_el2
+	str x1, [x18, #8 * 33]
 
 .endm
 
 
 .macro restore_registers
 	/* Restore registers x2-x18, x29 & x30. */
-	ldp x2, x3, [sp, #8 * 2]
-	ldp x4, x5, [sp, #8 * 4]
-	ldp x6, x7, [sp, #8 * 6]
-	ldp x8, x9, [sp, #8 * 8]
-	ldp x10, x11, [sp, #8 * 10]
-	ldp x12, x13, [sp, #8 * 12]
-	ldp x14, x15, [sp, #8 * 14]
-	ldp x16, x17, [sp, #8 * 16]
-	ldr x18, [sp, #8 * 18]
-	ldp x29, x30, [sp, #8 * 20]
+	mrs x0, tpidr_el2
+	ldp x4, x5, [x0, #8 * 4]
+	ldp x6, x7, [x0, #8 * 6]
+	ldp x8, x9, [x0, #8 * 8]
+	ldp x10, x11, [x0, #8 * 10]
+	ldp x12, x13, [x0, #8 * 12]
+	ldp x14, x15, [x0, #8 * 14]
+	ldp x16, x17, [x0, #8 * 16]
+	ldr x18, [x0, #8 * 18]
+	ldp x29, x30, [x0, #8 * 29]
 
+	/* Restore return address & mode. */
+	ldp x1, x2, [x0, #8 * 31]
+	msr elr_el2, x1
+	msr spsr_el2, x2
 
-	/* Restore registers elr_elx & spsr_elx, using x0 & x1 as scratch. */
-	ldp x0, x1, [sp, #8 * 22]
-	msr elr_el2, x0
-	msr spsr_el2, x1
-	ldr x3,[sp,#8 * 24]
-	msr esr_el2,x3
-	/* Restore x0 & x1, and release stack space. */
-	ldp x0, x1, [sp], #8 * 26
+	ldr x1, [x0, 8 * 33]
+	msr hcr_el2, x1
+	isb
+
+	ldr x1, [x0, #8 * 34]
+	msr ttbr0_el2, x1
+	isb
+
+	/* Restore x0..x3, which we have used as scratch before. */
+	ldp x2, x3, [x0, #8 * 2]
+	ldp x0, x1, [x0, #8 * 0]
+	
 .endm
 
 
@@ -84,10 +103,10 @@
 .macro lower_sync_exception
 	
 	save_registers
-	bl print_registers
+	bl handle_lower_aarch64
 	restore_registers
 	mov w7, wzr
-	smc 1
+	smc 0
 	save_registers
 	bl print_registers
 	restore_registers
