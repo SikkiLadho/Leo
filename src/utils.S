@@ -6,7 +6,7 @@
 .endm
 
 .macro save_registers
-	/* Reserve stack space and save registers x0-x30. */
+	/* save registers x0-x30. */
 	str x18, [sp, #-16]!
 	mrs x18, tpidr_el2
 	stp x0, x1, [x18, #8 * 0]
@@ -58,10 +58,6 @@
 
 	ldr x1, [x0, 8 * 33]
 	msr hcr_el2, x1
-	isb
-
-	ldr x1, [x0, #8 * 34]
-	msr ttbr0_el2, x1
 	isb
 
 	/* Restore x0..x3, which we have used as scratch before. */

@@ -80,25 +80,18 @@ void smc_handler(struct regs * smc_regs)
 	return;
 }
 
-
-void handle_lower_aarch64(uintreg_t x0)
+void handle_lower_aarch64(void)
 {
-    struct regs *regs = get_struct();
-    if(x0 == PSCI_CPU_ON_AARCH64)
-    {
-
-    }
-    else
-    {
-         uintreg_t smc_pc = regs->pc;
-		smc_handler(regs);
-       
-		/* Skip the SMC instruction. */
+	    struct regs *regs = get_struct();
+        uintreg_t smc_pc = regs->pc;
 		uintreg_t esr = read_msr(esr_el2);
+		smc_handler(regs);
+
+    	/* Skip the SMC instruction. */
+		
         regs->pc = smc_pc + GET_NEXT_PC_INC(esr);
 
 		return;
-    }
 }
 
 

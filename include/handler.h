@@ -1,6 +1,7 @@
 #ifndef _HANDLER_H
 #define _HANDLER_H
 
+#include "printf.h"
 #include "types.h"
 #include "reg_macros.h"
 # define   U(_x)	(_x)
@@ -58,7 +59,7 @@ void smc_handler(struct regs * smc_regs);
     comments 
 
 */
-extern void handle_lower_aarch64(uintreg_t x0);
+extern void handle_lower_aarch64();
 
 
 #endif
