@@ -1,6 +1,20 @@
 #include "handler.h"
 
 
+
+void print_regs(struct regs *regs)
+{
+	printf("---------- Leo Hypervisor SMC Debug Info Start ---------- \r\n");
+	printf("print_regs called:\r\n");
+	printf("X0-X18:\r\n");
+	for(int i=0;i<=18;i++)
+	{
+		printf("X%d:%x\r\n", i, regs->r[i]);
+	}	
+	printf("---------- Leo Hypervisor SMC Debug Info End ---------- \r\n");
+}
+
+
 extern void get_next_pc(void){
     long int esr = read_msr(esr_el2);
     uint64_t next_pc = GET_NEXT_PC_INC(esr) + read_msr(elr_el2);
@@ -80,15 +94,33 @@ void smc_handler(struct regs * smc_regs)
 	return;
 }
 
+void cpu_entry_point_c(void)
+{
+	struct * regs =  get_struct();
+	printf("CPU ENTRY POINT sikki ladho\r\n");
+	print_regs(regs)
+	return;
+}
+
 void handle_lower_aarch64(void)
 {
 	    struct regs *regs = get_struct();
         uintreg_t smc_pc = regs->pc;
 		uintreg_t esr = read_msr(esr_el2);
+		// entry_point_address = regs->r[2];
+		// regs->r[2] = cpu_entry_point;
+		// if(regs->r[0] == PSCI_CPU_ON_AARCH64)
+		// {
+		// 	print_regs(regs);
+					
+		// }
 		smc_handler(regs);
 
     	/* Skip the SMC instruction. */
-		
+		if(regs->r[0] == PSCI_CPU_ON_AARCH64)
+		{
+			print_regs(regs);
+		}
         regs->pc = smc_pc + GET_NEXT_PC_INC(esr);
 
 		return;

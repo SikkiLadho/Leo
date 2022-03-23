@@ -7,11 +7,23 @@
 # define   U(_x)	(_x)
 #define PSCI_CPU_ON_AARCH64		U(0xc4000003)
 
+
 /**
  * The Client ID field within X7 for an SMC64 call.
  */
 #define CLIENT_ID_MASK UINT64_C(0xffff)
+uintreg_t entry_point_address;
+/* prints register values in the struct */
+void print_regs(struct regs *r);
 
+
+
+/* 
+
+    comments 
+
+*/
+extern void cpu_entry_point_c(void);
 
 /* 
 

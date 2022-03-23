@@ -1,6 +1,6 @@
 #include "printf.h"
 #include "reg_macros.h"
-void print_registers(){
+void print_registers(void){
 
     printf("x0 -> %d \r\n",read_reg(x0));
     printf("x1 -> %d \r\n",read_reg(x1));

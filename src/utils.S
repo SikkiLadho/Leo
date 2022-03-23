@@ -1,4 +1,12 @@
 
+.globl cpu_entry_point
+cpu_entry_point:
+	save_registers
+	bl cpu_entry_point_c
+	restore_registers
+	eret_with_sb
+
+
 .macro eret_with_sb
 	eret
 	dsb	nsh
