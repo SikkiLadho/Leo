@@ -98,7 +98,7 @@ void cpu_entry_point_c(void)
 {
 	struct * regs =  get_struct();
 	printf("CPU ENTRY POINT sikki ladho\r\n");
-	print_regs(regs)
+	print_regs(regs);
 	return;
 }
 
