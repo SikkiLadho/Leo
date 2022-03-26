@@ -94,13 +94,13 @@ void smc_handler(struct regs * smc_regs)
 	return;
 }
 
-void cpu_entry_point_c(void)
-{
-	struct * regs =  get_struct();
-	printf("CPU ENTRY POINT sikki ladho\r\n");
-	print_regs(regs);
-	return;
-}
+// void cpu_entry_point_c(void)
+// {
+// 	struct regs * regs =  get_struct();
+// 	printf("CPU ENTRY POINT sikki ladho\r\n");
+// 	print_regs(regs);
+// 	return;
+// }
 
 void handle_lower_aarch64(void)
 {
@@ -109,12 +109,11 @@ void handle_lower_aarch64(void)
 		uintreg_t esr = read_msr(esr_el2);
 		// entry_point_address = regs->r[2];
 		// regs->r[2] = cpu_entry_point;
-		// if(regs->r[0] == PSCI_CPU_ON_AARCH64)
-		// {
-		// 	print_regs(regs);
-					
-		// }
-		smc_handler(regs);
+		//  if(regs->r[0] == PSCI_CPU_ON_AARCH64)
+		//  {
+		//  	print_regs(regs);			
+		//  }
+		 smc_handler(regs);
 
     	/* Skip the SMC instruction. */
 		if(regs->r[0] == PSCI_CPU_ON_AARCH64)

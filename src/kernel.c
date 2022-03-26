@@ -55,7 +55,7 @@ void kernel_main( void * dtb_addr)
 				
 				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@0");
 				spin_tbl_to_psci(dtb_addr,cpu);
-
+				
 				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@1");
 				spin_tbl_to_psci(dtb_addr,cpu);
 

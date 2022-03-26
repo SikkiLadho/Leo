@@ -1,10 +1,5 @@
 
-.globl cpu_entry_point
-cpu_entry_point:
-	save_registers
-	bl cpu_entry_point_c
-	restore_registers
-	eret_with_sb
+
 
 
 .macro eret_with_sb
@@ -74,14 +69,32 @@ cpu_entry_point:
 	
 .endm
 
+
+cpu_entry_point:
+bl cpu_entry_confirm  // cpu_entry_confirm is a function defined handler.c
+b cpu_entry_point
+
+
+
+
 .macro lower_sync_exception
 	
 	save_registers
+//push to stack if any regs will be clobbered
+	/* 
+	//compare x0 with c4000003
+	cmp x0, #c4000003	
+*/
+	bne skip_spu_on_config
+	adr x2, cpu_entry_point
+skip_spu_on_config:
+//load from stack if any regs are cloberred
 	bl handle_lower_aarch64
 	restore_registers
 	eret_with_sb
-
 .endm
+
+
 
 
 
@@ -235,8 +248,8 @@ arm64_elX_to_el1:
 
 
 
-	/* Configure exception handlers. */
-	adr x2, vector_table_el2
+ 	/* Configure exception handlers. */
+ 	adr x2, vector_table_el2
 	msr vbar_el2, x2
 	
 	mrs x1, hcr_el2
