@@ -70,25 +70,73 @@
 .endm
 
 
-cpu_entry_point:
-bl cpu_entry_confirm  // cpu_entry_confirm is a function defined handler.c
-b cpu_entry_point
+cpu_entry_point_1:
+
+str x3, [sp,#-8]!
+mov x3, xzr
+mov w3, #0x21e4
+movk w3, #0xf2, lsl #16
+msr elr_el2, x3
+ldr x3, [sp], #8
+eret
+
+b cpu_entry_point_1
+
+cpu_entry_point_2:
+
+str x3, [sp,#-8]!
+mov x3, xzr
+mov w3, #0x21e4
+movk w3, #0xf2, lsl #16
+msr elr_el2, x3
+ldr x3, [sp], #8
+eret
 
 
+b cpu_entry_point_2
+
+cpu_entry_point_3:
+
+str x3, [sp,#-8]!
+mov x3, xzr
+mov w3, #0x21e4
+movk w3, #0xf2 , lsl #16
+msr elr_el2, x3
+ldr x3, [sp], #8
+eret
+
+b cpu_entry_point_3
 
 
 .macro lower_sync_exception
+	str x3, [sp,#-8]!
+    mov w3, #0x0003
+	movk w3, #0xc400, lsl #16
+	cmp w3, w0
+	bne skip_cpu_on_config
 	
-	save_registers
-//push to stack if any regs will be clobbered
-	/* 
-	//compare x0 with c4000003
-	cmp x0, #c4000003	
-*/
-	bne skip_spu_on_config
-	adr x2, cpu_entry_point
-skip_spu_on_config:
+	mov x3, 2
+	cmp x3,x1
+	beq cpu_2
+
+	mov x3, 3
+	cmp x3,x1
+	beq cpu_3
+
+cpu_1:
+	adr x2, cpu_entry_point_1
+	b skip_cpu_on_config
+cpu_2:
+	adr x2, cpu_entry_point_2
+	b skip_cpu_on_config
+cpu_3:
+	adr x2, cpu_entry_point_3
+	b skip_cpu_on_config
+
+skip_cpu_on_config:
 //load from stack if any regs are cloberred
+	ldr x3, [sp], #8
+	save_registers	
 	bl handle_lower_aarch64
 	restore_registers
 	eret_with_sb
@@ -247,8 +295,9 @@ arm64_elX_to_el1:
 	msr sp_el1, x27
 
 
-
+ 
  	/* Configure exception handlers. */
+
  	adr x2, vector_table_el2
 	msr vbar_el2, x2
 	

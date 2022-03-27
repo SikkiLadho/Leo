@@ -17,11 +17,11 @@ uintreg_t entry_point_address;
 void print_regs(struct regs *r);
 
 
-void cpu_entry_confirm()
-{
-    printf("CPU REACHED>>> YEAAAAAAAAAAAAYY\r\n");
-}
+extern void cpu_entry_confirm_1(void);
 
+extern void cpu_entry_confirm_2(void);
+
+extern void cpu_entry_confirm_3(void);
 
 
 /* 
