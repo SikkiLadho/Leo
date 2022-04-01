@@ -1,4 +1,4 @@
-
+#include "mm.h"
 
 
 
@@ -71,14 +71,17 @@
 
 
 cpu_entry_point_1:
+mov sp, #LOW_MEMORY 
 bl cpu_entry_confirm_1
 b cpu_entry_point_1
 
 cpu_entry_point_2:
+mov sp, #LOW_MEMORY 
 bl cpu_entry_confirm_2
 b cpu_entry_point_2
 
 cpu_entry_point_3:
+mov sp, #LOW_MEMORY
 bl cpu_entry_confirm_3
 b cpu_entry_point_3
 
