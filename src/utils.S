@@ -71,41 +71,17 @@
 
 
 cpu_entry_point_1:
-
-str x3, [sp,#-8]!
-mov x3, xzr
-mov w3, #0x21e4
-movk w3, #0xf2, lsl #16
-msr elr_el2, x3
-ldr x3, [sp], #8
-eret
-
+bl cpu_entry_confirm_1
 b cpu_entry_point_1
 
 cpu_entry_point_2:
-
-str x3, [sp,#-8]!
-mov x3, xzr
-mov w3, #0x21e4
-movk w3, #0xf2, lsl #16
-msr elr_el2, x3
-ldr x3, [sp], #8
-eret
-
-
+bl cpu_entry_confirm_2
 b cpu_entry_point_2
 
 cpu_entry_point_3:
-
-str x3, [sp,#-8]!
-mov x3, xzr
-mov w3, #0x21e4
-movk w3, #0xf2 , lsl #16
-msr elr_el2, x3
-ldr x3, [sp], #8
-eret
-
+bl cpu_entry_confirm_3
 b cpu_entry_point_3
+
 
 
 .macro lower_sync_exception
