@@ -94,50 +94,12 @@ void smc_handler(struct regs * smc_regs)
 	return;
 }
 
-// void cpu_entry_point_c(void)
-// {
-// 	struct regs * regs =  get_struct();
-// 	printf("CPU ENTRY POINT sikki ladho\r\n");
-// 	print_regs(regs);
-// 	return;
-// }
-void cpu_entry_confirm_1(void)
-{
-    printf("CPU REACHEDD: CPU0\r\n");
-}
-
-
-void cpu_entry_confirm_2(void)
-{
-    printf("CPU REACHEDD: CPU1\r\n");
-}
-
-
-
-void cpu_entry_confirm_3(void)
-{
-    printf("CPU REACHEDD: CPU2\r\n");
-}
-
-
-
 
 void handle_lower_aarch64(void)
 {
 		struct regs *regs = get_struct();
         uintreg_t smc_pc = regs->pc;
 		uintreg_t esr = read_msr(esr_el2);
-		// entry_point_address = regs->r[2];
-		// regs->r[2] = cpu_entry_point;
-		  if(regs->r[0] == PSCI_CPU_ON_AARCH64)
-		  {
-			smc_handler(regs);
-			/* Skip the SMC instruction. */
-    		regs->pc = smc_pc + GET_NEXT_PC_INC(esr);
-
-			return;			
-		
-		  }
 		
 		 smc_handler(regs);
 		
