@@ -1,4 +1,4 @@
-
+#include "mm.h"
 
 
 
@@ -70,15 +70,22 @@
 .endm
 
 
+	/*
+
+	*/
+
 cpu_entry_point_1:
+mov    sp, #LOW_MEMORY
 bl cpu_entry_confirm_1
 b cpu_entry_point_1
 
 cpu_entry_point_2:
+mov    sp, #LOW_MEMORY
 bl cpu_entry_confirm_2
 b cpu_entry_point_2
 
 cpu_entry_point_3:
+mov    sp, #LOW_MEMORY
 bl cpu_entry_confirm_3
 b cpu_entry_point_3
 
@@ -216,8 +223,8 @@ delay:
 
 
 //jumps from any Exception Level to EL1
-.globl jump
-jump:  
+.globl eret_to_el2
+eret_to_el2:  
 	b arm64_elX_to_el1
 
 

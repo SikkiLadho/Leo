@@ -35,7 +35,7 @@ master:
 	bl memzero 
 
 	mov sp, #LOW_MEMORY 
-	bl kernel_main
+	bl hyp_main
 	// should never come here
 	b proc_hang
 
