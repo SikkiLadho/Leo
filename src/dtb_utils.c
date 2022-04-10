@@ -46,26 +46,6 @@ void removeInitRamfs(void * dtb_addr)
 			printf("Deleted \"linux,initrd-end\" and  \"linux,initrd-start\" from DTB.\r\n");
 			int cpus_node;
 			cpus_node = fdt_subnode_offset((const void*)dtb_addr, 0, "cpus");
-			if(cpus_node >= 0)
-			{
-				int cpu;
-				
-				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@0");
-				spin_tbl_to_psci(dtb_addr,cpu);
-				
-				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@1");
-				spin_tbl_to_psci(dtb_addr,cpu);
-
-				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@2");
-				spin_tbl_to_psci(dtb_addr,cpu);
-				
-				cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@3");
-				spin_tbl_to_psci(dtb_addr,cpu);	
-			}
-			else
-			{
-				printf("OOPS. Not Found.\r\n");
-			}
 			printf("Jumping into Linux kernel...\r\n");
 
 		}
