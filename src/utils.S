@@ -28,10 +28,6 @@ delay:
 //jumps from any Exception Level to EL1
 .globl eret_to_el2
 eret_to_el2:  
-	b arm64_elX_to_el1
-
-
-arm64_elX_to_el1:
 	mrs x26, CurrentEL
     cmp x26, #(0b01 << 2)
     bne .notEL1
@@ -50,16 +46,14 @@ arm64_elX_to_el1:
 
 
 
-	mov x26, #0x400000
-	msr elr_el3, x26
+	msr elr_el3, x1
 
 	mov x26, #((0b1111 << 6) | (0b0101)) /* EL1h runlevel */
 	msr spsr_el3, x26
 	b .confEL1
 
 .inEL2:
-	mov x26, #0x400000
-	msr elr_el2, x26
+	msr elr_el2, x1
 	mov x26, #((0b1111 << 6) | (0b0101)) /* EL1h runlevel */
 	msr spsr_el2, x26
 
