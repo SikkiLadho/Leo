@@ -1,12 +1,6 @@
 #include "dtb_utils.h"
 #include "printf.h" //printf
 
-
-void enable_psci_all(void * dtb_addr)
-{
-    
-}
-
 void spin_tbl_to_psci(void * dtb_addr, int cpu)
 {
 		if(cpu>=0)
