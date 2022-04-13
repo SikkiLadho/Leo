@@ -132,9 +132,7 @@ void handle_lower_aarch64( uint64_t cpu_entry_1, uint64_t cpu_entry_2,  uint64_t
 		struct regs *regs = get_struct();
         uintreg_t smc_pc = regs->pc;
 		uintreg_t esr = read_msr(esr_el2);
-		// entry_point_address = regs->r[2];
-		// regs->r[2] = cpu_entry_point;
-		  if(regs->r[0] == PSCI_CPU_ON_AARCH64)
+		 if(regs->r[0] == PSCI_CPU_ON_AARCH64)
 		  {
 			
 			
@@ -158,14 +156,7 @@ void handle_lower_aarch64( uint64_t cpu_entry_1, uint64_t cpu_entry_2,  uint64_t
 					regs->r[2] = cpu_entry_2;
 					break;
 				}
-			}
-
-
-			smc_handler(regs);
-			/* Skip the SMC instruction. */
-    		regs->pc = smc_pc + GET_NEXT_PC_INC(esr);
-
-			return;			
+			}		
 		
 		  }
 		
