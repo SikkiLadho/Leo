@@ -1,7 +1,8 @@
-#include "handler.h"
+#include "handler.h" 
 
-
-
+uintreg_t default_cpu1_entry = 0;
+uintreg_t default_cpu2_entry = 0;
+uintreg_t default_cpu3_entry = 0;
 void print_regs(struct regs *regs)
 {
 	printf("---------- Leo Hypervisor SMC Debug Info Start ---------- \r\n");
@@ -41,10 +42,17 @@ void arch_regs_set_retval(struct regs *r, struct smc_arg_regs v)
 }
 
 
-static struct smc_arg_regs smc_internal(uint32_t func, uint64_t arg0,
-				     uint64_t arg1, uint64_t arg2,
-				     uint64_t arg3, uint64_t arg4,
-				     uint64_t arg5, uint64_t arg6)
+// static struct smc_arg_regs smc_internal(uint32_t func, uint64_t arg0,
+// 				     uint64_t arg1, uint64_t arg2,
+// 				     uint64_t arg3, uint64_t arg4,
+// 				     uint64_t arg5, uint64_t arg6)
+// {
+// }
+
+
+struct smc_arg_regs smc_forward(uint32_t func, uint64_t arg0, uint64_t arg1,
+			     uint64_t arg2, uint64_t arg3, uint64_t arg4,
+			     uint64_t arg5, uint32_t caller_id)
 {
 	register uint64_t r0 __asm__("x0") = func;
 	register uint64_t r1 __asm__("x1") = arg0;
@@ -53,7 +61,7 @@ static struct smc_arg_regs smc_internal(uint32_t func, uint64_t arg0,
 	register uint64_t r4 __asm__("x4") = arg3;
 	register uint64_t r5 __asm__("x5") = arg4;
 	register uint64_t r6 __asm__("x6") = arg5;
-	register uint64_t r7 __asm__("x7") = arg6;
+	register uint64_t r7 __asm__("x7") = caller_id;
 
 	__asm__ volatile(
 		"smc #0"
@@ -72,15 +80,6 @@ static struct smc_arg_regs smc_internal(uint32_t func, uint64_t arg0,
 }
 
 
-struct smc_arg_regs smc_forward(uint32_t func, uint64_t arg0, uint64_t arg1,
-			     uint64_t arg2, uint64_t arg3, uint64_t arg4,
-			     uint64_t arg5, uint32_t caller_id)
-{
-	return smc_internal(func, arg0, arg1, arg2, arg3, arg4, arg5,
-			    caller_id);
-}
-
-
 
 void smc_handler(struct regs * smc_regs)
 {
@@ -94,35 +93,41 @@ void smc_handler(struct regs * smc_regs)
 	return;
 }
 
-// void cpu_entry_point_c(void)
-// {
-// 	struct regs * regs =  get_struct();
-// 	printf("CPU ENTRY POINT sikki ladho\r\n");
-// 	print_regs(regs);
-// 	return;
-// }
-void cpu_entry_confirm_1(void)
+
+
+
+void cpu_setup_1(void)
 {
-    printf("CPU REACHEDD: CPU0\r\n");
+	printf("LEO: Bringing up CPU 1\r\n");
+	struct regs *regs = get_struct();
+	regs->pc = default_cpu1_entry;
+	return;
+
 }
 
 
-void cpu_entry_confirm_2(void)
+void cpu_setup_2(void)
 {
-    printf("CPU REACHEDD: CPU1\r\n");
-}
-
-
-
-void cpu_entry_confirm_3(void)
-{
-    printf("CPU REACHEDD: CPU2\r\n");
+	printf("LEO: Bringing up CPU 2\r\n");
+	struct regs *regs = get_struct();
+	regs->pc = default_cpu2_entry;
+	return;
 }
 
 
 
+void cpu_setup_3(void)
+{
+	printf("LEO: Bringing up CPU 3\r\n");
+	struct regs *regs = get_struct();
+	regs->pc = default_cpu3_entry;
+	return;
+}
 
-void handle_lower_aarch64(void)
+
+
+
+void handle_lower_aarch64( uint64_t cpu_entry_1, uint64_t cpu_entry_2,  uint64_t cpu_entry_3)
 {
 		struct regs *regs = get_struct();
         uintreg_t smc_pc = regs->pc;
@@ -131,6 +136,31 @@ void handle_lower_aarch64(void)
 		// regs->r[2] = cpu_entry_point;
 		  if(regs->r[0] == PSCI_CPU_ON_AARCH64)
 		  {
+			
+			
+			switch(regs->r[1])
+			{
+				case 1:
+				{
+					default_cpu1_entry = regs->r[2];
+					regs->r[2] = cpu_entry_1;
+					break;
+				}
+				case 2:
+				{
+					default_cpu2_entry = regs->r[2];
+					regs->r[2] = cpu_entry_2;
+					break;
+				}
+				case 3:
+				{
+					default_cpu3_entry = regs->r[2];
+					regs->r[2] = cpu_entry_2;
+					break;
+				}
+			}
+
+
 			smc_handler(regs);
 			/* Skip the SMC instruction. */
     		regs->pc = smc_pc + GET_NEXT_PC_INC(esr);

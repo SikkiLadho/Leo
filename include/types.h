@@ -8,11 +8,19 @@
 //constants
 #define NUM_GP_REGS 31
 
+
+
+
 //typedefs
 typedef unsigned long int __uint64_t;
 typedef __uint64_t uint64_t;
 typedef uint64_t uintreg_t;
 
+
+//globals
+extern uintreg_t default_cpu1_entry;
+extern uintreg_t default_cpu2_entry;
+extern uintreg_t default_cpu3_entry;
 
 //data structures
 struct regs {

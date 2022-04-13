@@ -9,6 +9,16 @@
 #define str_(s) #s
 #define str(s) str_(s)
 
+
+
+#define read_adr(name)                                              \
+	__extension__({                                             \
+		uintreg_t __v;                                      \
+		__asm__ volatile("adr %0, " str(name) : "=r"(__v)); \
+		__v;                                                \
+	})
+
+
 #define read_msr(name)                                              \
 	__extension__({                                             \
 		uintreg_t __v;                                      \
