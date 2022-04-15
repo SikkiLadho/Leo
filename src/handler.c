@@ -132,13 +132,19 @@ void handle_lower_aarch64( uint64_t cpu_entry_1, uint64_t cpu_entry_2,  uint64_t
 		struct regs *regs = get_struct();
         uintreg_t smc_pc = regs->pc;
 		uintreg_t esr = read_msr(esr_el2);
+
+		//change entrypoint address if smc is PSCI_CPU_ON_AARCH64
 		 if(regs->r[0] == PSCI_CPU_ON_AARCH64)
 		  {
 			switch(regs->r[1])
 			{
+				//if the smc call is to wake CPU1
 				case 1:
 				{
+					//store the original entrypoint address in a global variable
 					default_cpu1_entry = regs->r[2];
+
+					//set the entrypoint to cpu_entry_1 defined in src/cpu_entrypoints.S
 					regs->r[2] = cpu_entry_1;
 					break;
 				}

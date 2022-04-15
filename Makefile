@@ -1,4 +1,4 @@
-ARMGNU ?= aarch64-linux-gnu
+ARMGNU ?= /home/larbs/leo_project/gcc-arm-gnu/bin/aarch64-none-linux-gnu
 COPS = -Wall -nostdlib -nostartfiles -ffreestanding -Iinclude
 ASMOPS = -Iinclude
 
@@ -10,7 +10,7 @@ all : kernel8.img
 
 install : clean kernel8.img
 	sudo mount /dev/$(FAT_DIR) /mnt/fat32
-	sudo rm /mnt/fat32/kernel8.img 
+	sudo rm /mnt/fat32/kernel8.img
 	sudo cp kernel8.img /mnt/fat32/
 	sudo umount /dev/$(FAT_DIR)
 
@@ -20,7 +20,7 @@ clean :
 	rm -rf libfdt/*.d
 	rm -rf libfdt/*.o
 	rm -rf libfdt/*.a
-	
+
 
 $(BUILD_DIR)/%_c.o: $(SRC_DIR)/%.c
 	mkdir -p $(@D)
@@ -41,5 +41,3 @@ kernel8.img: $(SRC_DIR)/linker.ld $(OBJ_FILES)
 	cd libfdt && $(MAKE)
 	$(ARMGNU)-ld -T $(SRC_DIR)/linker.ld -Llibfdt -o $(BUILD_DIR)/kernel8.elf  $(OBJ_FILES) -lfdt
 	$(ARMGNU)-objcopy $(BUILD_DIR)/kernel8.elf -O binary kernel8.img
-
-	

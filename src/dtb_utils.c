@@ -27,19 +27,25 @@ void spin_tbl_to_psci(void * dtb_addr, int cpu, int cpu_num)
 }
 
 
-void spin_table_psci_all(void * dtb_addr, int num_cpus)
+void spin_table_psci_all(void * dtb_addr)
 {
 
-	char * cpus[] = {"CPU@0", "CPU@1", "CPU@2", "CPU@3"};
 	int cpus_node = fdt_subnode_offset((const void*)dtb_addr, 0, "cpus");
+	int cpu;
+
+	cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@0");
+    spin_tbl_to_psci(dtb_addr,cpu, 0);
+
+	cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@1");
+    spin_tbl_to_psci(dtb_addr,cpu, 1);
 	
-	// change enable-method for num_cpus cpus to psci
-	for(int i=0;i<num_cpus; i++)
-    {
-		cpus[4]++;
-		int cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, cpus[i]);
-        spin_tbl_to_psci(dtb_addr,cpu, i);
-    }
+	cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@2");
+    spin_tbl_to_psci(dtb_addr,cpu, 2);
+	
+	cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@3");
+    spin_tbl_to_psci(dtb_addr,cpu, 3);
+
+
 }
 
 

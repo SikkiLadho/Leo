@@ -18,7 +18,7 @@ void hyp_main( void * dtb_addr)
 	printf("Current Exception level: %d \r\n", current_el);
 	printf("DTB Address: %x \r\n", dtb_addr);
 
-	spin_table_psci_all(dtb_addr,MAX_CPUS);
+	spin_table_psci_all(dtb_addr);
 
 	removeInitRamfs(dtb_addr);
 
