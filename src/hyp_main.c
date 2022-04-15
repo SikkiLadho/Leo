@@ -1,7 +1,7 @@
 #include "printf.h" //printf
 #include "mini_uart.h" //uart_init
 #include "utils.h" //eret_to_el2
-#include "dtb_utils.h" //spin_tbl_to_psci, removeInitRamfs
+#include "dtb_utils.h" //spin_tbl_to_psci_all, removeInitRamfs
 #include "mm.h"
 #include "config.h" //LOAD_ADDRESS, MAX_CPUS
 
@@ -18,11 +18,7 @@ void hyp_main( void * dtb_addr)
 	printf("Current Exception level: %d \r\n", current_el);
 	printf("DTB Address: %x \r\n", dtb_addr);
 
-	// change enable-method for MAX_CPUS cpus to psci
-	for(int cpu=0;cpu<MAX_CPUS; cpu++)
-    {
-        spin_tbl_to_psci(dtb_addr,cpu);
-    }
+	spin_table_psci_all(dtb_addr,MAX_CPUS);
 
 	removeInitRamfs(dtb_addr);
 

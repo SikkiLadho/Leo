@@ -24,7 +24,9 @@ int fdt_setprop(void *fdt, int nodeoffset, const char *name, const void *val, in
 	[1] https://www.kernel.org/doc/Documentation/devicetree/bindings/arm/cpus.txt
     [2] https://github.com/SikkiLadho/Leo/issues/6
 	*/ 
-void spin_tbl_to_psci(void * dtb_addr, int cpu);
+
+void spin_table_psci_all(void * dtb_addr, int num_cpus);
+void spin_tbl_to_psci(void * dtb_addr, int cpu, int cpu_num);
 
 
     /* 

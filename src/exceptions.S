@@ -1,8 +1,5 @@
 #include "exception_macros.S" //lower_sync_exception
 
-
-
-
 .globl vector_table_el2
 .balign 0x800
 vector_table_el2:
@@ -39,7 +36,7 @@ serr_cur_spx:
 
 .balign 0x80
 sync_lower_64:
-	lower_sync_exception
+	lower_sync_exception //defined in src/exception_macros.S
 
 .balign 0x80
 irq_lower_64:

@@ -134,8 +134,6 @@ void handle_lower_aarch64( uint64_t cpu_entry_1, uint64_t cpu_entry_2,  uint64_t
 		uintreg_t esr = read_msr(esr_el2);
 		 if(regs->r[0] == PSCI_CPU_ON_AARCH64)
 		  {
-			
-			
 			switch(regs->r[1])
 			{
 				case 1:
@@ -153,11 +151,10 @@ void handle_lower_aarch64( uint64_t cpu_entry_1, uint64_t cpu_entry_2,  uint64_t
 				case 3:
 				{
 					default_cpu3_entry = regs->r[2];
-					regs->r[2] = cpu_entry_2;
+					regs->r[2] = cpu_entry_3;
 					break;
 				}
 			}		
-		
 		  }
 		
 		 smc_handler(regs);

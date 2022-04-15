@@ -68,11 +68,11 @@
 
 
 .macro lower_sync_exception
-	save_registers	
-	adr x0,cpu_entry_point_1
+	save_registers
+	adr x0,cpu_entry_point_1 //entry_points defined in src/cpu_entrpoints.S
 	adr x1,cpu_entry_point_2
-	adr x2,cpu_entry_point_2
-	bl handle_lower_aarch64
+	adr x2,cpu_entry_point_3
+	bl handle_lower_aarch64 //defined in src/handler.c
 	restore_registers
 	eret_with_sb
 .endm
