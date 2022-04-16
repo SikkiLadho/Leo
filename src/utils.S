@@ -26,8 +26,8 @@ delay:
 
 
 //jumps from any Exception Level to EL1
-.globl eret_to_el2
-eret_to_el2:  
+.globl eret_to_el1
+eret_to_el1:  
 	mrs x26, CurrentEL
     cmp x26, #(0b01 << 2)
     bne .notEL1

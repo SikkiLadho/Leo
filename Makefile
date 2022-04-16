@@ -1,4 +1,4 @@
-ARMGNU ?= /home/larbs/leo_project/gcc-arm-gnu/bin/aarch64-none-linux-gnu
+ARMGNU ?= aarch64-linux-gnu
 COPS = -Wall -nostdlib -nostartfiles -ffreestanding -Iinclude
 ASMOPS = -Iinclude
 
