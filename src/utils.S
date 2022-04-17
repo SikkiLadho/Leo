@@ -80,7 +80,7 @@ eret_to_el1:
 
  	adr x2, vector_table_el2
 	msr vbar_el2, x2
-	
+ 
 	mrs x1, hcr_el2
 	orr x1, x1, #(0x1 << 19)	//hcr_el2.TSC=1
 	msr hcr_el2, x1

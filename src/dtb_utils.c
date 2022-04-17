@@ -39,11 +39,11 @@ void spin_table_psci_all(void * dtb_addr)
 	cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@1");
     spin_tbl_to_psci(dtb_addr,cpu, 1);
 	
-	cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@2");
-    spin_tbl_to_psci(dtb_addr,cpu, 2);
+	// cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@2");
+    // spin_tbl_to_psci(dtb_addr,cpu, 2);
 	
-	cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@3");
-    spin_tbl_to_psci(dtb_addr,cpu, 3);
+	// cpu  = fdt_subnode_offset((const void*)dtb_addr, cpus_node, "cpu@3");
+    // spin_tbl_to_psci(dtb_addr,cpu, 3);
 
 
 }

@@ -132,10 +132,14 @@ void handle_lower_aarch64( uint64_t cpu_entry_1, uint64_t cpu_entry_2,  uint64_t
 		struct regs *regs = get_struct();
         uintreg_t smc_pc = regs->pc;
 		uintreg_t esr = read_msr(esr_el2);
-
+		printf("Nomral SMC ID:%lx\r\n",regs->r[0]);
 		//change entrypoint address if smc is PSCI_CPU_ON_AARCH64
 		 if(regs->r[0] == PSCI_CPU_ON_AARCH64)
 		  {
+		printf("**********************************************8\r\n");
+		printf("PSCI_ON SMC ID:%lx\r\n",regs->r[0]);
+
+		printf("**********************************************8\r\n");
 			switch(regs->r[1])
 			{
 				//if the smc call is to wake CPU1

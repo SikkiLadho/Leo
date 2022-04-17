@@ -13,7 +13,7 @@ void hyp_main( void * dtb_addr)
 	/* Initialize UART. */
 	uart_init();
 
-	printf("Leo Hypervisor Running...\r\n");
+	printf("TESTing. Leo Hypervisor Running...\r\n");
 	int current_el = get_el(); //get current exception level
 	printf("Current Exception level: %d \r\n", current_el);
 	printf("DTB Address: %x \r\n", dtb_addr);
