@@ -16,4 +16,4 @@ jobs:
     - name: install cross compiler
     - run: sudo apt install crossbuild-essential-arm64
     - name: make
-      run: make
+    - run: make
