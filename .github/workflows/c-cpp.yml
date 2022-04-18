@@ -14,6 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: install cross compiler
-    - run: sudo apt install crossbuild-essential-arm64
+      run: sudo apt install crossbuild-essential-arm64
     - name: make
-    - run: make
+      run: make
