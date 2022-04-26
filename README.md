@@ -1,7 +1,7 @@
 # Leo Hypervisor
 Leo. Type 1 hypervisor on Raspberry Pi 4 machine.
 
-![Generic badge](https://img.shields.io/github/commit-activity/w/sikkiladho/leo)
+![Generic badge](https://img.shields.io/github/commit-activity/m/sikkiladho/leo)
 [![C/C++ CI](https://github.com/SikkiLadho/Leo/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/SikkiLadho/Leo/actions/workflows/c-cpp.yml)
 
 # Set Up 
