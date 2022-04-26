@@ -6,7 +6,7 @@
 #include "reg_macros.h"
 # define   U(_x)	(_x)
 #define PSCI_CPU_ON_AARCH64		U(0xc4000003)
-
+#define PSCI_DEBUG_LEO		U(0xc400000A)
 
 /**
  * The Client ID field within X7 for an SMC64 call.

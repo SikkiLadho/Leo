@@ -132,8 +132,22 @@ void handle_lower_aarch64( uint64_t cpu_entry_1, uint64_t cpu_entry_2,  uint64_t
 		struct regs *regs = get_struct();
         uintreg_t smc_pc = regs->pc;
 		uintreg_t esr = read_msr(esr_el2);
-		printf("Nomral SMC ID:%lx\r\n",regs->r[0]);
+		//printf("Nomral SMC ID:%lx\r\n",regs->r[0]);
 		//change entrypoint address if smc is PSCI_CPU_ON_AARCH64
+
+		if(regs->r[0]== PSCI_DEBUG_LEO){
+
+				printf("PSCI_ON SMC ID:%lx\r\n",regs->r[0]);
+				printf("REGISTER-1:%lx\r\n",regs->r[1]);
+				printf("REGISTER-2:%lx\r\n",regs->r[2]);
+				printf("REGISTER-3:%lx\r\n",regs->r[3]);
+				printf("REGISTER-4:%lx\r\n",regs->r[4]);
+				printf("REGISTER-5:%lx\r\n",regs->r[5]);
+				printf("REGISTER-6:%lx\r\n",regs->r[6]);
+				printf("REGISTER-7:%lx\r\n",regs->r[7]);
+			
+		}
+
 		 if(regs->r[0] == PSCI_CPU_ON_AARCH64)
 		  {
 		printf("**********************************************8\r\n");
