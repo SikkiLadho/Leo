@@ -1,0 +1,24 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ouzi-dev/commit-status-updater@v1.1.0
+    - if: always()
+      uses: ouzi-dev/commit-status-updater@v1.1.0
+      with:
+        status: "${{ job.status }}"
+    - name: install cross compiler
+      run: sudo apt install crossbuild-essential-arm64
+    - name: make
+      run: make
