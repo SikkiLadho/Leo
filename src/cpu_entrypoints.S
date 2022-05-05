@@ -15,7 +15,7 @@ cpu_entry_point_1:
     mov x1, #LOW_MEMORY
     mov x2, #SECTION_SIZE
     mul x2, x2, x0
-    mov sp, x1
+    mov sp, x2
 
 
     save_registers
@@ -30,7 +30,7 @@ cpu_entry_point_2:
     mov x1, #LOW_MEMORY
     mov x2, #SECTION_SIZE
     mul x2, x2, x0
-    mov sp, x1
+    mov sp, x2
 
     save_registers
     bl cpu_setup_1
@@ -45,7 +45,7 @@ cpu_entry_point_3:
     mov x1, #LOW_MEMORY
     mov x2, #SECTION_SIZE
     mul x2, x2, x0
-    mov sp, x1
+    mov sp, x2
 
     save_registers
     bl cpu_setup_2
