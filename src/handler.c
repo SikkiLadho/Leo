@@ -137,14 +137,28 @@ void handle_lower_aarch64( uint64_t cpu_entry_1, uint64_t cpu_entry_2,  uint64_t
 
 		if(regs->r[0]== PSCI_DEBUG_LEO){
 
-				printf("PSCI_ON SMC ID:%lx\r\n",regs->r[0]);
-				printf("REGISTER-1:%lx\r\n",regs->r[1]);
-				printf("REGISTER-2:%lx\r\n",regs->r[2]);
-				printf("REGISTER-3:%lx\r\n",regs->r[3]);
-				printf("REGISTER-4:%lx\r\n",regs->r[4]);
-				printf("REGISTER-5:%lx\r\n",regs->r[5]);
-				printf("REGISTER-6:%lx\r\n",regs->r[6]);
-				printf("REGISTER-7:%lx\r\n",regs->r[7]);
+				printf("EL2: Trapped the SMC with ID:%lx\r\n", regs->r[0]);
+				printf("EL2: X1:%lx\r\n",regs->r[1]);
+				printf("EL2: X2:%lx\r\n",regs->r[2]);
+				printf("EL2: X3:%lx\r\n",regs->r[3]);
+				printf("EL2: X4:%lx\r\n",regs->r[4]);
+				printf("EL2: Forwarding SMC to EL3(Trusted Firmware-A).\r\n");
+
+				smc_handler(regs);
+
+				/* Skip the SMC instruction. */
+        		regs->pc = smc_pc + GET_NEXT_PC_INC(esr);
+				
+				printf("EL2: SMC returned from El3(Trusted Firmware-A).\r\n");
+				printf("EL2: X0:%lx\r\n",regs->r[0]);
+				printf("EL2: X1:%lx\r\n",regs->r[1]);
+				printf("EL2: X2:%lx\r\n",regs->r[2]);
+				printf("EL2: X3:%lx\r\n",regs->r[3]);
+				printf("EL2: X4:%lx\r\n",regs->r[4]);
+				printf("EL2: Returning to EL1(Linux Kernel).\r\n");
+
+				return;
+
 			
 		}
 
