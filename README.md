@@ -1,57 +1,62 @@
-# Leo Hypervisor
-Leo. Type 1 hypervisor on Raspberry Pi 4 machine.
-
 ![Generic badge](https://img.shields.io/github/commit-activity/m/sikkiladho/leo)
 [![C/C++ CI](https://github.com/SikkiLadho/Leo/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/SikkiLadho/Leo/actions/workflows/c-cpp.yml)
 
+# Leo Hypervisor
+
+`Leo` is a `Type 1 Hypervisor` for the `Raspberry Pi 4`.
+
 # Set Up 
-This setup was tested on Debian
 
-### Install Required Dependencies and Toolchain
+This setup was tested on Debian.
 
-`sudo apt install git bc bison flex libssl-dev make libc6-dev libncurses5-dev`
+1. Install the required dependencies and toolchain,
 
-### Install the 64-bit Toolchain for a 64-bit Kernel
+  ```shell
+  sudo apt install git bc bison flex libssl-dev make libc6-dev libncurses5-dev
+  ```
 
-`sudo apt install crossbuild-essential-arm64`
+2. Install the 64-bit toolchain for a 64-bit kernel,
 
-### Compile Trusted-Firmware-A for Raspiberry Pi. 
+  ```shell
+  sudo apt install crossbuild-essential-arm64
+  ```
 
+3. Compile ARM-trusted-Firmware for Raspiberry Pi,
 
-`git clone https://github.com/ARM-software/arm-trusted-firmware.git`
+  ```shell
+  git clone https://github.com/ARM-software/arm-trusted-firmware.git
+  cd arm-trusted-firmware/
+  CROSS_COMPILE=aarch64-linux-gnu- make PLAT=rpi4 DEBUG=1
+  ```
 
-`cd arm-trusted-firmware/`
+4. Copy the `bl31.bin` from [Trusted Firmware-A (TF-A)](https://trustedfirmware-a.readthedocs.io/en/latest/) to the `/boot/` directory on the Raspberry Pi 4B's SD card,
 
-`CROSS_COMPILE=aarch64-linux-gnu- make PLAT=rpi4 DEBUG=1`
+  ```shell
+  cp build/rpi4/debug/bl31.bin /media/me/boot/
+  ```
 
-Copy [Trusted Firmware-A (TF-A)](https://trustedfirmware-a.readthedocs.io/en/latest/) binary 'bl31.bin' to Raspberry Pi 4B's sd card /boot/ directory.
+5. Rename `kerne8.img` to `el1-kernel.img` in the SD Card's boot directory,
 
-`cp build/rpi4/debug/bl31.bin /media/me/boot/`
+  ```shell
+  mv /media/boot/kernel8.img el1-kernel8.img
+  ```
 
+6. Compile Leo ARM64 Hypervisor
 
-### Rename kerne8.img to el1-kernel.img in the SD Card's boot directory
+  ```shell
+  git clone https://github.com/sikkiladho/leo.git leo
+  cd leo
+  make
+  ```
 
-mv /media/boot/kernel8.img el1-kernel8.img
+You will get the `kernel8.img` binary, which is the hypervisor binary. Copy it to you SD Card.
 
-### Compile Leo ARM64 Hypervisor
+7. Add following to /boot/config.txt in Raspberry Pi Model 4B
 
-
-`git clone https://github.com/sikkiladho/leo.git`
-`make`
-
-you will get the kernel8.img binary, which is the hypervisor binary, you have to copy it to you SD Card.
-
-### Add following to /boot/config.txt in Raspberry Pi Model 4B
-
-``````
-enable_uart=1
-
-arm_64bit=1
-
-enable_gic=1
-
-armstub=bl31.bin
-
-initramfs el1-kernel.img 0x400000
-``````
-
+  ```txt
+  enable_uart=1
+  arm_64bit=1
+  enable_gic=1
+  armstub=bl31.bin
+  initramfs el1-kernel.img 0x400000
+  ```
